@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import '@fontsource/roboto';
+import {Route, BrowserRouter as Router, Switch, Redirect} from "react-router-dom";
+import { ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import UserDetailsDrawer from "./userComponents/UserDetailsDrawer";
+import UsersTable from "./userComponents/UsersTable";
+import {MainTheme} from "./Theme";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const useStyles = makeStyles((theme) => ({
+        root: {
+            width: "95%",
+            margin: "0 auto",
+            marginTop: 10,
+        }
+    }));
+
+    const classes = useStyles();
+
+    return (
+        <ThemeProvider theme={MainTheme}>
+            <div className={classes.root}>
+                <Router>
+                    <Switch>
+                        <Route path="/users/:userId">
+                            <UserDetailsDrawer/>
+                        </Route>
+                    </Switch>
+                    <Switch>
+                        <Route path="/users">
+                            <UsersTable/>
+                        </Route>
+                        <Route path='/'>
+                            <Redirect
+                                to={{
+                                    pathname: "/users",
+                                }}
+                            />
+                        </Route>
+                    </Switch>
+                </Router>
+            </div>
+        </ThemeProvider>
+    );
 }
 
 export default App;
